@@ -1,4 +1,4 @@
-from weekTimeTypes import weekTime
+from customTypes.weekTimeTypes import *
 
 class Subject:
     name: str
@@ -6,7 +6,6 @@ class Subject:
 
 class SubjectsToAllocate:
     totalWeight: int
-    totalHours: int
     subjects: list[Subject]
 
 class StudySession:
@@ -16,6 +15,3 @@ class StudySession:
 class AllocatedStudySession:
     subjectName: str
     subjectSessions: list[StudySession]
-
-class AllocatedStudySessions:
-    sessions: list[AllocatedStudySession]

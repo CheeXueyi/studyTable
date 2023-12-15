@@ -13,7 +13,6 @@ class duration:
     def __str__(self):
         return f'{self.days} days, {self.hours} hours, {self.minutes} minutes'
 
-
 class weekTime:
     '''
     implemets a weekly time. Stores the day (Monday to Sunday), and time
