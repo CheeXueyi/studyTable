@@ -14,9 +14,9 @@ class DataStore:
 
     def __str__(self):
         return f'''subjects: {self.subjects}
-        studySessions: {self.studySessions}
-        totalStudyTime: {self.totalStudyTime}
-        allocatedStudySession: {self.allocatedStudySession}
+studySessions: {self.studySessions}
+totalStudyTime: {self.totalStudyTime}
+allocatedStudySession: {self.allocatedStudySession}
         ''' 
 
 data = DataStore()
@@ -26,7 +26,10 @@ def clear() -> None:
     resets dataStore to blank state
     '''
     global data
-    data = DataStore()
+    data.subjects = []
+    data.studySessions = []
+    data.totalStudyTime = 0
+    data.allocatedStudySession = None
 
 def getData() -> DataStore:
     '''

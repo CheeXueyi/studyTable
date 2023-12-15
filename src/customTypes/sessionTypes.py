@@ -1,8 +1,12 @@
 from customTypes.weekTimeTypes import *
 
-class Subject:
+class Subject:        
     name: str
     weight: int
+
+    def __init__(self, name: str, weight: int):
+        self.name = name
+        self.weight = weight
 
 class SubjectsToAllocate:
     totalWeight: int
