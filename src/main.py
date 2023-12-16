@@ -7,6 +7,7 @@ printCommands()
 while(True):
     command = input("\nCommand: ")
     match command.split():
+        # ---------- subject commands ----------
         case ["as", *args]:
             if (len(args) != 2): 
                 print("incorrect number of arguments")
@@ -26,11 +27,15 @@ while(True):
                 print(e)
         case ["ss"]:
             showSubjects()
+
+        # ---------- other commands ----------
         case ["h"]:
             printCommands()
         case ["E"]:
             print("Exiting program")
             break
+
+        # ---------- debugging ----------
         case ["d"]:
             print(getData())
         case ["c"]:
