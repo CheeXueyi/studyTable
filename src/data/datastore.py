@@ -13,8 +13,18 @@ class DataStore:
     allocatedStudySession: list[AllocatedStudySession] | None = None
 
     def __str__(self):
-        return f'''subjects: {self.subjects}
-studySessions: {self.studySessions}
+        subjectStrs = []
+        for sub in self.subjects:
+            subjectStrs.append(f"{sub.name}, {sub.weight}")
+
+        studySessionStrs = []
+        for sess in self.studySessions:
+            studySessionStrs.append(
+                f"day {sess.start.dayNum} {sess.start.hour}:{sess.start.minute} to day {sess.end.dayNum} {sess.end.hour}:{sess.end.minute}"
+            )
+        
+        return f'''subjects: {subjectStrs}
+studySessions: {studySessionStrs}
 totalStudyTime: {self.totalStudyTime}
 allocatedStudySession: {self.allocatedStudySession}
         ''' 

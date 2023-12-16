@@ -1,4 +1,4 @@
-from commandLogic import addSubject
+from commandLogic import addSubject, editSubject
 from data.datastore import getData, clear
 from helpers import printCommands
 
@@ -11,11 +11,20 @@ while(True):
             if (len(args) != 2): 
                 print("incorrect number of arguments")
                 continue
-        
             try:
                 addSubject(args[0], args[1])
             except Exception as e: 
                 print(e)
+                
+        case ["es", *args]:
+            if len(args) != 2:
+                print("incorrect number of arguments")
+                continue
+            try:
+                editSubject(args[0], args[1])
+            except Exception as e:
+                print(e)
+
         case ["h"]:
             printCommands()
         case ["E"]:
