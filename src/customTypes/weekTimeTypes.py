@@ -10,6 +10,33 @@ class duration:
         self.hours = hours
         self.minutes = minutes
 
+    def greaterThan(self, otherDuration: duration) -> bool:
+        '''
+        returns true if self is strictly greater than some other duration 
+        '''
+        if self.days > otherDuration.days:
+            return True
+        if self.days < otherDuration.days:
+            return False
+        
+        # same number of days 
+        if self.hours > otherDuration.hours:
+            return True
+        if self.hours < otherDuration.hours:
+            return False
+        
+        # same number of days and hours
+        if self.minutes > otherDuration.minutes:
+            return True
+        else:
+            return False
+
+    def equal(self, otherDuration: duration) -> bool:
+        '''
+        checks if self is equal to some other duration
+        '''
+        return (self.days == otherDuration.days and self.hours == otherDuration.hours and self.minutes == otherDuration.minutes)
+
     def __str__(self):
         return f'{self.days} days, {self.hours} hours, {self.minutes} minutes'
 

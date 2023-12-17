@@ -27,7 +27,13 @@ while(True):
                 print(e)
         case ["ss"]:
             showSubjects()
-
+        
+        # ---------- session commands ----------
+        case ["ap", *args]:
+            if len(args) != 2:
+                print("incorrect number of arguments")
+                continue
+            
         # ---------- other commands ----------
         case ["h"]:
             printCommands()

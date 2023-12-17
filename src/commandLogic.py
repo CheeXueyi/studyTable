@@ -1,8 +1,9 @@
 import typing
 from customTypes.errorTypes import subjectExistsError
 from customTypes.sessionTypes import Subject
+from customTypes.weekTimeTypes import weekTime
 from data.datastore import getData
-from helpers import findSubjectByName
+from helpers import findSubjectByName, parseTimeStr, timeStrCheck
 
 
 def addSubjectErrorChecker(name: str, weight: str):
@@ -52,3 +53,18 @@ def showSubjects():
     for num, sub in enumerate(data.subjects):
         print(f" {num+1:<6}| {sub.name:<20}| {sub.weight:<8}")
     print("-"*lineLength)
+
+def addPeriodErrorChecker(startTimeRaw: str, endTimeRaw: str):
+    if False in [timeStrCheck(startTimeRaw), timeStrCheck(endTimeRaw)]:
+        raise Exception("Invalid time inputted")
+
+    startTime = parseTimeStr(startTimeRaw)
+    endTime = parseTimeStr(endTimeRaw)
+    weekStartTime = weekTime()
+
+    if not (startTime.timeMinus(weekStartTime).greaterThan(endTime.timeMinus(weekStartTime))):
+        raise Exception("starttime must be before endtime in the same week")
+    
+
+def addPeriod(startTimeRaw: str, endTimeRaw: str):
+    addPeriodErrorChecker(startTimeRaw, endTimeRaw)
