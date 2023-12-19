@@ -24,6 +24,12 @@ class StudySession:
     def equal(self, otherSession: StudySession):
         return self.start.equal(otherSession.start) and self.end.equal(otherSession.end)
     
+    def __str__(self):
+        dayArr = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+        startTimePretty = f"{str(self.start.hour).zfill(2)}:{str(self.start.minute).zfill(2)}"
+        endTimePretty = f"{str(self.end.hour).zfill(2)}:{str(self.end.minute).zfill(2)}"
+        return f"{dayArr[self.start.dayNum]} {startTimePretty} - {endTimePretty}"
+    
 class AllocatedStudySession:
     subjectName: str
     subjectSessions: list[StudySession]

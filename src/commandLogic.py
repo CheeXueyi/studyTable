@@ -129,6 +129,16 @@ def deletePeriod(startTimeRaw: str, endTimeRaw: str):
     getData().studySessions.pop(i)
     print(f"Successfully deleted study session from {startTimeRaw} to {endTimeRaw}.")
 
+def showPeriods():
+    data = getData()
+    if len(data.studySessions) == 0:
+        print("No study sessions")
+        return
+    
+    print("Printing study sessions")   
+    for sess in data.studySessions:
+        print(sess)
+    
 def printCommands() -> None:
     commands = [
         "---Subject commands---",
@@ -143,8 +153,8 @@ def printCommands() -> None:
         "sp: show existing study sessions",
         "\n",
         "---Timetable---",
-        "p: automatically allocate subjects to study sessions",
-        "sp: show timetable",
+        "at: automatically allocate subjects to study sessions",
+        "st: show timetable",
         "\n",
         "---Others---",
         "s: save data",

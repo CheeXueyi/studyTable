@@ -1,4 +1,4 @@
-from commandLogic import addPeriod, addSubject, deletePeriod, editSubject, showSubjects, printCommands
+from commandLogic import addPeriod, addSubject, deletePeriod, editSubject, showPeriods, showSubjects, printCommands
 from data.datastore import getData, clear
 
 # main loop
@@ -44,6 +44,9 @@ while(True):
                 deletePeriod(args[0], args[1])
             except Exception as e:
                 print(e)
+        case ["sp"]:
+            showPeriods()
+            
         # ---------- other commands ----------
         case ["h"]:
             printCommands()
