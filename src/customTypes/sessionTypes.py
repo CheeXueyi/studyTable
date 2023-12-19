@@ -1,3 +1,4 @@
+from __future__ import annotations
 from customTypes.weekTimeTypes import *
 
 class Subject:        
@@ -19,6 +20,9 @@ class StudySession:
     def __init__(self, start: weekTime, end: weekTime):
         self.start = start
         self.end = end
+
+    def equal(self, otherSession: StudySession):
+        return self.start.equal(otherSession.start) and self.end.equal(otherSession.end)
     
 class AllocatedStudySession:
     subjectName: str

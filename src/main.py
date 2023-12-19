@@ -1,4 +1,4 @@
-from commandLogic import addPeriod, addSubject, editSubject, showSubjects, printCommands
+from commandLogic import addPeriod, addSubject, deletePeriod, editSubject, showSubjects, printCommands
 from data.datastore import getData, clear
 
 # main loop
@@ -34,6 +34,14 @@ while(True):
                 continue
             try:
                 addPeriod(args[0], args[1])
+            except Exception as e:
+                print(e)
+        case ["dp", *args]:
+            if len(args) != 2:
+                print("incorrect number of arguments")
+                continue
+            try:
+                deletePeriod(args[0], args[1])
             except Exception as e:
                 print(e)
         # ---------- other commands ----------

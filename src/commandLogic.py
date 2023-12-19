@@ -91,11 +91,43 @@ def addPeriod(startTimeRaw: str, endTimeRaw: str):
         i += 1
 
     newStudySession = StudySession(startTime, endTime)
-    getData().studySessions.insert(i, newStudySession)
+    studySessions.insert(i, newStudySession)
 
     # print success message
     print(f"Added new study session from {startTimeRaw} to {endTimeRaw}.")
 
+def deletePeriodErrorChecker(startTimeRaw: str, endTimeRaw: str):
+    # check if inputted weektimes are valid
+    if False in [timeStrCheck(startTimeRaw), timeStrCheck(endTimeRaw)]:
+        raise Exception("Invalid time inputted")
+    
+    # check if there exists a studyPeriod with given start and end times
+    startTime = parseTimeStr(startTimeRaw)
+    endTime = parseTimeStr(endTimeRaw)
+
+    exists = False
+    for sess in getData().studySessions:
+        if startTime.equal(sess.start) and endTime.equal(sess.end):
+            exists = True
+            break
+
+    if not exists:
+        raise Exception(f"study session from {startTimeRaw} to {endTimeRaw} does not exist.")
+
+def deletePeriod(startTimeRaw: str, endTimeRaw: str):
+    deletePeriodErrorChecker(startTimeRaw, endTimeRaw)
+
+    # no error, find and delete given study session
+    startTime = parseTimeStr(startTimeRaw)
+    endTime = parseTimeStr(endTimeRaw)
+    sessToDelete = StudySession(startTime, endTime)
+
+    i = 0
+    while not getData().studySessions[i].equal(sessToDelete):
+        i += 1
+    
+    getData().studySessions.pop(i)
+    print(f"Successfully deleted study session from {startTimeRaw} to {endTimeRaw}.")
 
 def printCommands() -> None:
     commands = [
@@ -107,7 +139,7 @@ def printCommands() -> None:
         "---Study session commands---",
         "time format: DD:HH:MM, monday is 00, sunday is 06, 24 hour format",
         "ap <starting time> <ending time>: add study session",
-        "ep: edit existing study session",
+        "dp <starting time> <ending time>: delete existing study session",
         "sp: show existing study sessions",
         "\n",
         "---Timetable---",
@@ -122,7 +154,3 @@ def printCommands() -> None:
     print("Commands:")
     for command in commands:
         print(command)
-    
-
-    
-    
