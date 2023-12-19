@@ -2,32 +2,6 @@ from customTypes.sessionTypes import Subject
 from customTypes.weekTimeTypes import weekTime
 from data.datastore import getData
 
-def printCommands() -> None:
-    commands = [
-        "---Subject commands---",
-        "as <subjectName> <weight>: add subject",
-        "es <subjectName> <weight>: edit existing subject",
-        "ss: show existing subjects",
-        "\n",
-        "---Study subject commands---",
-        "time format: DD:HH:MM, monday is 00, sunday is 06, 24 hour format",
-        "ap <starting time> <ending time>: add study session",
-        "ep: edit existing study session",
-        "sp: show existing study sessions",
-        "\n",
-        "---Timetable---",
-        "p: automatically allocate subjects to study sessions",
-        "sp: show timetable",
-        "\n",
-        "---Others---",
-        "s: save data",
-        "h: show commands",
-        "E: exit program"
-    ]
-    print("Commands:")
-    for command in commands:
-        print(command)
-    
 def findSubjectByName(name: str) -> Subject | None:
     data = getData()
     for i in data.subjects:
@@ -70,3 +44,26 @@ def parseTimeStr(rawTimeStr: str) -> weekTime:
     hour = int(rawTimeStr[3:5])
     minute = int(rawTimeStr[6:8])
     return weekTime(dayNum, hour, minute)
+
+def timePeriodsIntersect(
+    periodStart1: weekTime, periodEnd1: weekTime,
+    periodStart2: weekTime, periodEnd2: weekTime
+):
+    '''
+    Checks if two time periods intersect. Returns false if 2 periods only share
+    an end point (ie, 1:00 - 2:00 does not intersect with 2:00 - 3:00)
+    '''
+    if periodStart1.equal(periodEnd2) or periodStart2.equal(periodEnd1):
+        return False
+    
+    periodCheckers = [
+        periodEnd1.timeMinus(periodStart1).greaterThanEqual(periodEnd1.timeMinus(periodStart2)),
+        periodEnd2.timeMinus(periodStart2).greaterThanEqual(periodEnd2.timeMinus(periodStart1))
+    ]
+    
+    if True in periodCheckers:
+        return True
+    else:
+        return False
+    
+    

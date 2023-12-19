@@ -15,6 +15,10 @@ class SubjectsToAllocate:
 class StudySession:
     start: weekTime
     end: weekTime
+
+    def __init__(self, start: weekTime, end: weekTime):
+        self.start = start
+        self.end = end
     
 class AllocatedStudySession:
     subjectName: str

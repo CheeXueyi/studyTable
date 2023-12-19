@@ -37,6 +37,11 @@ class duration:
         '''
         return (self.days == otherDuration.days and self.hours == otherDuration.hours and self.minutes == otherDuration.minutes)
 
+    def greaterThanEqual(self, otherDuration: duration) -> bool:
+        greaterThanCondition = self.greaterThan(otherDuration)
+        equalCondition = self.equal(otherDuration)
+        return greaterThanCondition or equalCondition
+
     def __str__(self):
         return f'{self.days} days, {self.hours} hours, {self.minutes} minutes'
 
@@ -44,6 +49,10 @@ class weekTime:
     '''
     implemets a weekly time. Stores the day (Monday to Sunday), and time
     '''
+    dayNum: int
+    hour: int
+    minute: int
+
     def __init__(self, dayNum: int = 0, hour: int = 0, minute: int = 0):
         if dayNum < 0 or dayNum >= 7:
             raise ValueError(f'invalid dayNum = {dayNum}. dayNum should be an integer between 0 and 6 (inclusive).')
@@ -56,11 +65,7 @@ class weekTime:
         self.dayNum = dayNum
         self.hour = hour
         self.minute = minute
-
-    dayNum: int
-    hour: int
-    minute: int
-
+    
     # methods
     def timeMinus(self, otherTime: weekTime) -> duration:
         '''
@@ -83,3 +88,9 @@ class weekTime:
         
         days: int = (self.dayNum - otherTime.dayNum - toMinus + 7) % 7
         return duration(days, hours, minutes)
+
+    def equal(self, otherTime: weekTime) -> bool:
+        '''
+        checks if self is equal to another weekTime
+        '''
+        return (self.dayNum == otherTime.dayNum and self.hour == otherTime.hour and self.minute == otherTime.minute)

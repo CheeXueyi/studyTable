@@ -1,9 +1,9 @@
 import typing
 from customTypes.errorTypes import subjectExistsError
-from customTypes.sessionTypes import Subject
+from customTypes.sessionTypes import StudySession, Subject
 from customTypes.weekTimeTypes import weekTime
 from data.datastore import getData
-from helpers import findSubjectByName, parseTimeStr, timeStrCheck
+from helpers import findSubjectByName, parseTimeStr, timePeriodsIntersect, timeStrCheck
 
 
 def addSubjectErrorChecker(name: str, weight: str):
@@ -62,9 +62,67 @@ def addPeriodErrorChecker(startTimeRaw: str, endTimeRaw: str):
     endTime = parseTimeStr(endTimeRaw)
     weekStartTime = weekTime()
 
-    if not (startTime.timeMinus(weekStartTime).greaterThan(endTime.timeMinus(weekStartTime))):
+    if startTime.timeMinus(weekStartTime).greaterThanEqual(endTime.timeMinus(weekStartTime)):
         raise Exception("starttime must be before endtime in the same week")
     
+    # check that this time period does not intersect with another time period
+    for p in getData().studySessions:
+        if (timePeriodsIntersect(p.start, p.end, startTime, endTime)):
+            raise Exception("new studyPeriod cannot intersect with existing studyPeriods")
 
 def addPeriod(startTimeRaw: str, endTimeRaw: str):
     addPeriodErrorChecker(startTimeRaw, endTimeRaw)
+
+    # no error, add study period to database such that study periods are sorted
+    # by startTime
+    startTime = parseTimeStr(startTimeRaw)
+    endTime = parseTimeStr(endTimeRaw)
+
+    studySessions = getData().studySessions
+    startOfWeek = weekTime()
+    startTimeFromStartOfWeek = startTime.timeMinus(startOfWeek)
+    
+    # search for insert position and insert
+    i = 0
+    while (
+        i < len(studySessions) and not
+        studySessions[i].start.timeMinus(startOfWeek).greaterThan(startTimeFromStartOfWeek)
+    ):
+        i += 1
+
+    newStudySession = StudySession(startTime, endTime)
+    getData().studySessions.insert(i, newStudySession)
+
+    # print success message
+    print(f"Added new study session from {startTimeRaw} to {endTimeRaw}.")
+
+
+def printCommands() -> None:
+    commands = [
+        "---Subject commands---",
+        "as <subjectName> <weight>: add subject",
+        "es <subjectName> <weight>: edit existing subject",
+        "ss: show existing subjects",
+        "\n",
+        "---Study session commands---",
+        "time format: DD:HH:MM, monday is 00, sunday is 06, 24 hour format",
+        "ap <starting time> <ending time>: add study session",
+        "ep: edit existing study session",
+        "sp: show existing study sessions",
+        "\n",
+        "---Timetable---",
+        "p: automatically allocate subjects to study sessions",
+        "sp: show timetable",
+        "\n",
+        "---Others---",
+        "s: save data",
+        "h: show commands",
+        "E: exit program"
+    ]
+    print("Commands:")
+    for command in commands:
+        print(command)
+    
+
+    
+    
