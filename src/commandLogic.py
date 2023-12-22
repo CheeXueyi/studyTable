@@ -93,6 +93,12 @@ def addPeriod(startTimeRaw: str, endTimeRaw: str):
     newStudySession = StudySession(startTime, endTime)
     studySessions.insert(i, newStudySession)
 
+
+    # update totalStudyTime in datastore
+    sessionDuration = endTime.timeMinus(startTime)
+    totalStudyTime = getData().totalStudyTime
+    getData().totalStudyTime = totalStudyTime.add(sessionDuration)
+
     # print success message
     print(f"Added new study session from {startTimeRaw} to {endTimeRaw}.")
 
@@ -127,6 +133,12 @@ def deletePeriod(startTimeRaw: str, endTimeRaw: str):
         i += 1
     
     getData().studySessions.pop(i)
+
+    # update totalStudyTime in datastore
+    sessionDuration = endTime.timeMinus(startTime)
+    totalStudyTime = getData().totalStudyTime
+    getData().totalStudyTime = totalStudyTime.minus(sessionDuration)
+
     print(f"Successfully deleted study session from {startTimeRaw} to {endTimeRaw}.")
 
 def showPeriods():

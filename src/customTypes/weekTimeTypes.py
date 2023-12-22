@@ -48,13 +48,37 @@ class duration:
         '''
         retDuration = duration(self.days, self.hours, self.minutes)
 
-        retDuration.minutes = (retDuration.minutes + otherDuration.minutes) % 60
         hoursFromMinutes = (retDuration.minutes + otherDuration.minutes) // 60
-        retDuration.hours = (retDuration.hours + otherDuration.hours + hoursFromMinutes) % 24
+        retDuration.minutes = (retDuration.minutes + otherDuration.minutes) % 60
+
         daysFromHours = (retDuration.hours + otherDuration.hours + hoursFromMinutes) // 24
+        retDuration.hours = (retDuration.hours + otherDuration.hours + hoursFromMinutes) % 24
+        
         retDuration.days = daysFromHours + otherDuration.days
 
         return retDuration
+
+    def minus(self, otherDuration: duration) -> duration:
+        '''
+        minuses otherDuration from self and returns it. Does not change self and otherDuration. Assumes that self is greater than or equal to otherDuration
+        '''
+        retDuration = duration(self.days, self.hours, self.minutes)
+        retDuration.minutes -= otherDuration.minutes
+        if (retDuration.minutes < 0):
+            hoursNeeded = -1 * (retDuration.minutes // 60)
+            retDuration.minutes %= 60
+            retDuration.hours -= hoursNeeded
+
+        retDuration.hours -= otherDuration.hours
+        if (retDuration.hours < 0):
+            daysNeeded = -1 * (retDuration.hours // 24)
+            retDuration.hours %= 24
+            retDuration.days -= daysNeeded
+
+        retDuration.days -= otherDuration.days
+
+        return retDuration
+        
 
     def totalMinutes(self) -> int:
         '''
