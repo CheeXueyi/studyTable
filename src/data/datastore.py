@@ -1,4 +1,5 @@
 from customTypes.sessionTypes import AllocatedStudySession, StudySession, Subject
+from customTypes.weekTimeTypes import duration
 
 class DataStore:
     # list of subjects
@@ -7,7 +8,7 @@ class DataStore:
     # studySession stuff
     # study sessions in ascending order of time of week
     studySessions: list[StudySession] = []
-    totalStudyTime: int = 0
+    totalStudyTime: duration = duration()
 
     # allocated study session if it exists
     allocatedStudySession: list[AllocatedStudySession] | None = None
@@ -38,7 +39,7 @@ def clear() -> None:
     global data
     data.subjects = []
     data.studySessions = []
-    data.totalStudyTime = 0
+    data.totalStudyTime = duration()
     data.allocatedStudySession = None
 
 def getData() -> DataStore:

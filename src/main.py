@@ -46,7 +46,7 @@ while(True):
                 print(e)
         case ["sp"]:
             showPeriods()
-            
+
         # ---------- other commands ----------
         case ["h"]:
             printCommands()

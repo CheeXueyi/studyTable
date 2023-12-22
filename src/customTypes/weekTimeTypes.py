@@ -5,7 +5,7 @@ class duration:
     hours: int
     minutes: int
 
-    def __init__(self, days: int, hours: int, minutes: int):
+    def __init__(self, days: int = 0, hours: int = 0, minutes: int = 0):
         self.days = days
         self.hours = hours
         self.minutes = minutes
@@ -41,6 +41,30 @@ class duration:
         greaterThanCondition = self.greaterThan(otherDuration)
         equalCondition = self.equal(otherDuration)
         return greaterThanCondition or equalCondition
+
+    def add(self, otherDuration: duration) -> duration:
+        '''
+        adds otherDuration to self and returns it. Does not change self and otherDuration
+        '''
+        retDuration = duration(self.days, self.hours, self.minutes)
+
+        retDuration.minutes = (retDuration.minutes + otherDuration.minutes) % 60
+        hoursFromMinutes = (retDuration.minutes + otherDuration.minutes) // 60
+        retDuration.hours = (retDuration.hours + otherDuration.hours + hoursFromMinutes) % 24
+        daysFromHours = (retDuration.hours + otherDuration.hours + hoursFromMinutes) // 24
+        retDuration.days = daysFromHours + otherDuration.days
+
+        return retDuration
+
+    def totalMinutes(self) -> int:
+        '''
+        returns the total duration of self in minutes
+        '''
+
+        minutesFromDays = self.days * 24 * 60
+        minutesFromHours = self.hours * 60
+        return minutesFromDays + minutesFromHours + self.minutes
+        
 
     def __str__(self):
         return f'{self.days} days, {self.hours} hours, {self.minutes} minutes'
